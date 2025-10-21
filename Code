@@ -1,0 +1,112 @@
+#include <iostream>
+#include <string>
+#include <list>
+#include <cmath>
+#include <cstdlib>
+
+using namespace std;
+
+static 	int passwordLength;
+static string generatedPassword;
+
+static void UserPreferences()
+{
+	bool validInput = false;
+
+	bool UseSpecialCharacters;
+	bool UseNumbers;
+	bool UseUppercaseLetters;
+	bool RepeatCharacters;
+	cin >> std::boolalpha;
+	while (!validInput)
+	{
+		cout << "Enter the desired password length (8 - 64): ";
+		cin >> passwordLength;
+		if (passwordLength < 8 || passwordLength >64)
+		{
+			cout << "The password length must be between 8 and 64 characters. Please enter a valid number" << endl;
+		}
+		else
+		{
+			validInput = true;
+		}
+	}
+	cout << "Do you want to inlude special characters (true/false): ";
+	cin >> UseSpecialCharacters;
+	cout << "Do you want to include numbers (true/false): ";
+	cin >> UseNumbers;
+	cout << "Do you want to include uppercase letters (true/false): ";
+	cin >> UseUppercaseLetters;
+}
+
+static void GeneratePassword()
+{
+	/*ascii lowercase letters 97 - 122
+	  ascii uppercase letters 65 - 90
+	  char 33 - 64*/
+	int count = 0;
+	while (passwordLength > count)
+	{
+		int character = rand() % 4;
+		switch (character)
+		{
+		case 0:
+			int lowercase = (rand() % 26) + 96;
+			break;
+		case 1:
+			int uppercase = (rand() % 26) + 64;
+			break;
+		case 2:
+			int characters = (rand() % 32) + 33;
+			break;
+		case 3:
+			int numbers = rand() % 1000;
+			break;
+		}
+	}
+}
+
+static void help()
+{
+	cout << "This program generates a random password based on user-defined preferences." << endl;
+	cout << "You will be prompted to enter the desired password length (between 8 and 64 characters)." << endl;
+	cout << "You can choose to include special characters, numbers, and uppercase letters in your password." << endl;
+	cout << "Additionally, you can specify whether characters can be repeated more than twice." << endl;
+	cout << "Based on your preferences, the program will generate a secure password for you." << endl;
+}
+
+static void TestPasswordStrength()
+{
+	// Functionality to be implemented
+}
+
+int main()
+{
+	cout << "  Welcome to Lock Cracker!  Made by Anton Kirichev" << endl;
+	cout << endl;
+	cout << "----------------------------------------------------";
+	bool exit = false;
+	while (!exit)
+	{
+		cout << endl;
+		cout << "Select action:\n1. Help\n2. Password preferences\n3. Generate a password\n4. Test password strength" << endl;
+		int choice;
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			help();
+			break;
+		case 2:
+			UserPreferences();
+			break;
+		case 3:
+			GeneratePassword();
+			break;
+		case 4:
+			TestPasswordStrength();
+			break;
+		}
+		return 0;
+	}
+}
