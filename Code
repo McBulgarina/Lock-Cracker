@@ -3,20 +3,21 @@
 #include <list>
 #include <cmath>
 #include <cstdlib>
+#include <random>
 
 using namespace std;
 
 static 	int passwordLength;
 static string generatedPassword;
 
+static bool UseSpecialCharacters;
+static bool UseNumbers;
+static bool UseUppercaseLetters;
+
 static void UserPreferences()
 {
 	bool validInput = false;
 
-	bool UseSpecialCharacters;
-	bool UseNumbers;
-	bool UseUppercaseLetters;
-	bool RepeatCharacters;
 	cin >> std::boolalpha;
 	while (!validInput)
 	{
@@ -41,29 +42,43 @@ static void UserPreferences()
 
 static void GeneratePassword()
 {
-	/*ascii lowercase letters 97 - 122
-	  ascii uppercase letters 65 - 90
-	  char 33 - 64*/
-	int count = 0;
-	while (passwordLength > count)
+	if (passwordLength == 0)
 	{
-		int character = rand() % 4;
-		switch (character)
-		{
-		case 0:
-			int lowercase = (rand() % 26) + 96;
-			break;
-		case 1:
-			int uppercase = (rand() % 26) + 64;
-			break;
-		case 2:
-			int characters = (rand() % 32) + 33;
-			break;
-		case 3:
-			int numbers = rand() % 1000;
-			break;
-		}
+		cout << "Set password preferences first (choose option 2)." << endl;
+		return;
 	}
+
+	const string lowercase = "abcdefghijklmnopqrstuvwxyz";
+	const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	const string numbers = "0123456789";
+	const string specials = "!@#$%^&*()_+-=[]{}|;:',.<>?/`~";
+
+	string pool = lowercase;
+	if (UseUppercaseLetters) pool += uppercase;
+	if (UseNumbers) pool += numbers;
+	if (UseSpecialCharacters) pool += specials;
+
+	// RNG: single engine
+	static std::mt19937 rng((std::random_device())());
+	std::uniform_int_distribution<size_t> dist(0, pool.size() - 1);
+
+	generatedPassword.clear();
+	generatedPassword.reserve(passwordLength);
+
+	for (int i = 0; i < passwordLength; ++i)
+	{
+		char c;
+		do
+		{
+			c = pool[dist(rng)];
+		} while (generatedPassword.size() >= 2 &&
+			generatedPassword[generatedPassword.size() - 1] == c &&
+			generatedPassword[generatedPassword.size() - 2] == c);
+
+		generatedPassword.push_back(c);
+	}
+
+	cout << "Generated password: " << generatedPassword << endl;
 }
 
 static void help()
@@ -71,7 +86,6 @@ static void help()
 	cout << "This program generates a random password based on user-defined preferences." << endl;
 	cout << "You will be prompted to enter the desired password length (between 8 and 64 characters)." << endl;
 	cout << "You can choose to include special characters, numbers, and uppercase letters in your password." << endl;
-	cout << "Additionally, you can specify whether characters can be repeated more than twice." << endl;
 	cout << "Based on your preferences, the program will generate a secure password for you." << endl;
 }
 
