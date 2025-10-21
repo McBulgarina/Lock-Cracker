@@ -14,30 +14,9 @@ static bool UseSpecialCharacters;
 static bool UseNumbers;
 static bool UseUppercaseLetters;
 
-static void UserPreferences()
+static void TestPasswordStrength()
 {
-	bool validInput = false;
-
-	cin >> std::boolalpha;
-	while (!validInput)
-	{
-		cout << "Enter the desired password length (8 - 64): ";
-		cin >> passwordLength;
-		if (passwordLength < 8 || passwordLength >64)
-		{
-			cout << "The password length must be between 8 and 64 characters. Please enter a valid number" << endl;
-		}
-		else
-		{
-			validInput = true;
-		}
-	}
-	cout << "Do you want to inlude special characters (true/false): ";
-	cin >> UseSpecialCharacters;
-	cout << "Do you want to include numbers (true/false): ";
-	cin >> UseNumbers;
-	cout << "Do you want to include uppercase letters (true/false): ";
-	cin >> UseUppercaseLetters;
+	// Functionality to be implemented
 }
 
 static void GeneratePassword()
@@ -89,9 +68,32 @@ static void help()
 	cout << "Based on your preferences, the program will generate a secure password for you." << endl;
 }
 
-static void TestPasswordStrength()
+static void UserPreferences()
 {
-	// Functionality to be implemented
+	bool validInput = false;
+
+	cin >> std::boolalpha;
+	while (!validInput)
+	{
+		cout << "Enter the desired password length (8 - 64): ";
+		cin >> passwordLength;
+		if (passwordLength < 8 || passwordLength >64)
+		{
+			cout << "The password length must be between 8 and 64 characters. Please enter a valid number" << endl;
+		}
+		else
+		{
+			validInput = true;
+		}
+	}
+	cout << "Do you want to inlude special characters (true/false): ";
+	cin >> UseSpecialCharacters;
+	cout << "Do you want to include numbers (true/false): ";
+	cin >> UseNumbers;
+	cout << "Do you want to include uppercase letters (true/false): ";
+	cin >> UseUppercaseLetters;
+	cout << "Password preferences set successfully." << endl;
+	GeneratePassword();
 }
 
 int main()
