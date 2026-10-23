@@ -1,2 +1,3 @@
 # Lock-Cracker
-An ap that generates passwords and checks how strong they are.
+An app that generates passwords and checks how strong they are.
+In C++
